@@ -7,9 +7,9 @@ import SmallPost from "../SideBar/SmallPost";
 interface PostData {
   title: string;
   description: string;
-  urlToImage: string;
-  publishedAt: string;
-  author: string;
+  image_url: string;
+  pubDate: string;
+  creator: string;
 }
 
 const BigText = styled.h1`
@@ -20,6 +20,7 @@ const BigText = styled.h1`
   text-transform: uppercase;
   padding-left: 50px;
 `;
+
 const Overview = styled.div`
   display: grid;
   margin: 50px 0 0 0px;
@@ -37,44 +38,51 @@ const PostOverview: React.FC = () => {
 
   useEffect(() => {
     fetch(
-      `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=06e19489ce094755aff113cfc07c5aa3`
+      "https://newsdata.io/api/1/news?apikey=pub_3716449ad1adac7966ed0d4d11084c81c81fa&q=cryptocurrency"
     )
       .then((response) => response.json())
       .then((data) => {
-        setPosts(data.articles);
+        const { results } = data; // Assuming the API returns an object with a 'results' key
+        setPosts(
+          results.map((post: PostData) => ({
+            ...post,
+            image_url: post.image_url || "defaultImageURL",
+            title: post.title || "No Title",
+            description: post.description || "No Description",
+            pubDate: post.pubDate || "No Date",
+            creator: post.creator || "Anonymous",
+          }))
+        );
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => console.error("Fetching error:", error));
   }, []);
 
   return (
     <Overview>
       <PostBlock>
         <BigText>Discover Our Latest Posts</BigText>
-        {posts.slice(0, 5).map((post, index) => (
+        {posts.slice(1, 4).map((post, index) => (
           <Post
-            key={0}
+            key={index} // Use the index as the key
             title={post.title}
-            imageUrl={post.urlToImage}
+            imageUrl={post.image_url}
             description={post.description}
-            publishedAt={post.publishedAt}
-            author={post.author}
+            publishedAt={post.pubDate}
+            author={post.creator}
           />
         ))}
       </PostBlock>
       <SideBar>
         {posts.slice(5, 10).map((post, index) => (
           <SmallPost
-            key={0}
+            key={index + 5}
             title={post.title}
-            imageUrl={post.urlToImage}
+            imageUrl={post.image_url}
             description={post.description}
-            // publishedAt={post.publishedAt}
-            // author={post.author}
           />
         ))}
       </SideBar>
     </Overview>
   );
 };
-
 export default PostOverview;

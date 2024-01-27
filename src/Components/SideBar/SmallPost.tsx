@@ -12,8 +12,8 @@ const Card = styled.div`
 
 const CardImage = styled.img`
   width: 50px;
-  height: 100px;
   object-fit: cover;
+  display: block;
 `;
 
 const CardBody = styled.div`

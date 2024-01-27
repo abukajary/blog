@@ -19,7 +19,9 @@ const Card = styled.div`
 
 const CardImage = styled.img`
   width: 50%;
-  object-fit: cover;
+  max-height: 400px;
+  object-fit: cover; 
+  display: block;
 `;
 
 const CardContent = styled.div`
@@ -39,12 +41,10 @@ const CardDescription = styled.p`
 `;
 
 const CardFooter = styled.div`
-  /* height: 100%; */
   display: flex;
   align-items: flex-end;
   flex-direction: column;
   margin-top: 20px;
-  /* justify-content: flex-end; */
 `;
 
 const CardAuthor = styled.div`
